@@ -1,6 +1,10 @@
 import tkinter as tk
 from tkinter import filedialog
-
+from tkinter import messagebox
+import pandas as pd
+import datetime
+import time
+import os
 
 # Create a file called INFO.SRU and open it in write
 def create_info(orgnr, namn, adress, postnr, postort, email):
@@ -187,17 +191,13 @@ def select_valuta_file():
     valuta_file = filedialog.askopenfilename()
     valuta_file_label.config(text=valuta_file)
 
-def run_code():
-
+def main():
     orgnr = orgnr_entry.get()
     namn = namn_entry.get()
     adress = adress_entry.get()
     postnr = postnr_entry.get()
     postort = postort_entry.get()
     email = email_entry.get()
-
-    # kör alla koderna här
-    import time
 
     create_info(orgnr, namn, adress, postnr, postort, email)
     time.sleep(2)
@@ -207,10 +207,11 @@ def run_code():
     time.sleep(2)
     convert_sum_trades()
 
-    from tkinter import messagebox
-
+    # Ta bort filerna efter att alla operationer är klara
+    os.remove("SumTrades.csv")
+    os.remove("TradesSEK.csv")
+    
     messagebox.showinfo("Success", "INFO.SRU & BLANKETTER.SRU Skapades")
-
 
 root = tk.Tk()
 root.title("SRUMaker")
@@ -274,8 +275,7 @@ year_entry.grid(row=8, column=1)
 
 
 # Skapa en knapp för att köra alla koderna
-run_button = tk.Button(root, text="Kör", command=run_code)
+run_button = tk.Button(root, text="Kör", command=main)
 run_button.grid(row=9, column=0, columnspan=2, pady=10)
 
-#Kör huvudloopen för att hålla GUI igång
 root.mainloop()
